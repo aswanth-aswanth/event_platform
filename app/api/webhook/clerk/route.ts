@@ -77,8 +77,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: newUser });
   }
 
-
   if (eventType === 'user.updated') {
+    if (!id) {
+      return new Response('Error: Missing clerkId', {
+        status: 400
+      });
+    }
+
     const { image_url, first_name, last_name, username } = evt.data;
 
     const user = {
@@ -94,7 +99,13 @@ export async function POST(req: Request) {
   }
 
   if (eventType === 'user.deleted') {
-    const deletedUser = await deleteUser(id!);
+    if (!id) {
+      return new Response('Error: Missing clerkId', {
+        status: 400
+      });
+    }
+
+    const deletedUser = await deleteUser(id);
 
     return NextResponse.json({ message: 'OK', user: deletedUser });
   }
