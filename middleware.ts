@@ -1,6 +1,7 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { authMiddleware } from "@clerk/nextjs/server";
 
-export default clerkMiddleware({
+// Define middleware with public and ignored routes
+export default authMiddleware({
   publicRoutes: [
     '/',
     '/events/:id',
@@ -12,9 +13,10 @@ export default clerkMiddleware({
     '/api/webhook/clerk',
     '/api/webhook/stripe',
     '/api/uploadthing'
-  ]
+  ],
 });
 
+// Configuration for middleware matching
 export const config = {
-  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/api/:path*'],
 };
