@@ -49,6 +49,12 @@ export async function POST(req: Request) {
   if (eventType === 'user.created') {
     const { email_addresses, image_url, first_name, last_name, username } = evt.data;
 
+    if (!id) {
+      return new Response('Error: Missing clerkId', {
+        status: 400
+      });
+    }
+
     const user = {
       clerkId: id,
       email: email_addresses[0].email_address,
@@ -70,6 +76,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'OK', user: newUser });
   }
+
 
   if (eventType === 'user.updated') {
     const { image_url, first_name, last_name, username } = evt.data;
